@@ -1,1 +1,143 @@
-# Brothers-Silver
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Brothers Silver</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial;background:#f7f7f7;color:#171717}
+header{background:#090909;color:white;padding:22px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:23px;font-weight:bold;letter-spacing:2px}
+.logo span{color:#bbb}
+button{cursor:pointer}
+header button{padding:11px;border:0}
+nav{background:#222;padding:15px;text-align:center}
+nav a{color:white;text-decoration:none;margin:0 12px;font-size:13px}
+.hero{padding:75px 8%;color:white;background:linear-gradient(90deg,#000d,#0004),url('https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=1400&q=85') center/cover}
+.hero h1{font-size:55px;margin:20px 0}
+.hero p{line-height:1.8}
+.hero button{padding:15px 22px;border:0;font-weight:bold}
+section{padding:45px 6%}
+.heading{text-align:center;margin-bottom:28px}
+.heading p{color:#777}
+.categories,.products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:17px}
+.category{height:155px;position:relative}
+.category img{width:100%;height:100%;object-fit:cover}
+.category a{position:absolute;inset:0;display:flex;align-items:end;padding:15px;color:white;text-decoration:none;font-weight:bold;font-size:20px;background:linear-gradient(transparent,#000b)}
+.toolbar{display:flex;gap:10px;margin-bottom:22px;flex-wrap:wrap}
+input,select{padding:12px;border:1px solid #ddd}
+input{flex:1;min-width:150px}
+.card{background:white;border:1px solid #eee;padding-bottom:15px}
+.card img{width:100%;height:210px;object-fit:cover}
+.info{padding:13px}
+.info h3{font-size:16px}
+.price{font-weight:bold;margin:12px 0}
+.buy{background:#111;color:white;border:0;padding:12px;width:100%}
+.about,footer{background:#101010;color:white;text-align:center;padding:40px 8%}
+.about p{color:#ccc;line-height:1.8}
+#cart{position:fixed;right:0;top:0;background:white;height:100vh;width:min(350px,100%);padding:22px;box-shadow:0 0 0 100vmax #0008;overflow:auto}
+#cart[hidden]{display:none}
+.line{padding:13px 0;border-bottom:1px solid #ddd}
+@media(max-width:700px){.categories,.products{grid-template-columns:repeat(2,minmax(0,1fr))}.hero h1{font-size:42px}.card img{height:160px}nav a{display:inline-block;margin:5px}}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">BROTHERS <span>SILVER</span></div>
+<button onclick="showCart(true)">🛒 Cart (<span id="count">0</span>)</button>
+</header>
+<nav>
+<a href="#home">HOME</a><a href="#categories">CATEGORIES</a><a href="#shop">SHOP</a><a href="#about">ABOUT</a>
+</nav>
+
+<div class="hero" id="home">
+<p>TIMELESS BEAUTY · EVERYDAY LUXURY</p>
+<h1>Discover Your<br>Silver Style.</h1>
+<p>Elegant jewelry for every moment.<br>Find your next favorite piece.</p>
+<button onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">SHOP NOW →</button>
+</div>
+
+<section id="categories">
+<div class="heading"><h2>SHOP BY CATEGORY</h2><p>Choose your favorite style</p></div>
+<div class="categories">
+<div class="category"><img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=400&q=80" alt="Bracelets"><a href="#shop" onclick="filterCat('Bracelets')">Bracelets ↗</a></div>
+<div class="category"><img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=400&q=80" alt="Rings"><a href="#shop" onclick="filterCat('Rings')">Rings ↗</a></div>
+<div class="category"><img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=400&q=80" alt="Necklaces"><a href="#shop" onclick="filterCat('Necklaces')">Necklaces ↗</a></div>
+<div class="category"><img src="https://images.unsplash.com/photo-1617038220319-276d3cfab638?auto=format&fit=crop&w=400&q=80" alt="Jewelry sets"><a href="#shop" onclick="filterCat('Sets')">Jewelry Sets ↗</a></div>
+</div>
+</section>
+
+<section id="shop">
+<div class="heading"><h2>OUR COLLECTION</h2><p>Find something special</p></div>
+<div class="toolbar">
+<input id="search" placeholder="Search jewelry..." oninput="render()">
+<select id="filter" onchange="render()">
+<option value="All">All Categories</option><option>Bracelets</option><option>Rings</option><option>Necklaces</option><option>Sets</option>
+</select>
+</div>
+<div class="products" id="products"></div>
+</section>
+
+<section class="about" id="about">
+<h2>Welcome to Brothers Silver</h2>
+<p>Discover elegant jewelry, beautiful bracelets, stylish rings and necklaces made to complete your look.</p>
+</section>
+
+<footer>
+<div class="logo">BROTHERS <span>SILVER</span></div>
+<p>Elegance in every detail.</p>
+<p>© <span id="year"></span> Brothers Silver</p>
+</footer>
+
+<div id="cart" hidden>
+<div style="display:flex;justify-content:space-between"><h2>Your Cart</h2><button onclick="showCart(false)">✕</button></div>
+<div id="items"></div>
+<h3>Total: <span id="total">0</span> EGP</h3>
+<button onclick="order()" style="width:100%;padding:14px;background:#111;color:white;border:0">ORDER VIA WHATSAPP</button>
+</div>
+
+<script>
+const data=[
+[1,"Classic Silver Bracelet","Bracelets",650,"photo-1611591437281-460bfbe1220a"],
+[2,"Charm Bracelet","Bracelets",850,"photo-1573408301185-9146fe634ad0"],
+[3,"Minimal Silver Ring","Rings",450,"photo-1605100804763-247f67b3557e"],
+[4,"Luxury Ring","Rings",700,"photo-1603561591411-07134e71a2a9"],
+[5,"Silver Necklace","Necklaces",900,"photo-1599643478518-a784e5dc4c8f"],
+[6,"Elegant Pendant","Necklaces",750,"photo-1611652022419-a9419f74343d"],
+[7,"Luxury Jewelry Set","Sets",1600,"photo-1617038220319-276d3cfab638"],
+[8,"Classic Jewelry Set","Sets",1350,"photo-1611652022419-a9419f74343d"]
+];
+let cart=[];
+function render(){
+let q=document.getElementById("search").value.toLowerCase();
+let f=document.getElementById("filter").value;
+let arr=data.filter(p=>p[1].toLowerCase().includes(q)&&(f==="All"||p[2]===f));
+document.getElementById("products").innerHTML=arr.length?arr.map(p=>`
+<div class="card">
+<img src="https://images.unsplash.com/${p[4]}?auto=format&fit=crop&w=500&q=80" alt="${p[1]}" loading="lazy">
+<div class="info"><small>${p[2].toUpperCase()}</small><h3>${p[1]}</h3>
+<div class="price">${p[3].toLocaleString()} EGP</div>
+<button class="buy" onclick="add(${p[0]})">ADD TO CART +</button></div>
+</div>`).join(""):"<p>No products found.</p>";
+}
+function filterCat(c){document.getElementById("filter").value=c;render()}
+function add(id){let p=cart.find(x=>x[0]===id);if(p)p[4]++;else{let item=data.find(x=>x[0]===id).slice();item.push(1);cart.push(item)}update()}
+function removeItem(id){cart=cart.filter(p=>p[0]!==id);update()}
+function update(){
+document.getElementById("count").textContent=cart.reduce((s,p)=>s+p[5],0);
+document.getElementById("items").innerHTML=cart.length?cart.map(p=>`<div class="line">${p[1]} × ${p[5]}<br>${(p[3]*p[5]).toLocaleString()} EGP <button onclick="removeItem(${p[0]})">Remove</button></div>`).join(""):"Your cart is empty.";
+document.getElementById("total").textContent=cart.reduce((s,p)=>s+p[3]*p[5],0).toLocaleString();
+}
+function showCart(v){document.getElementById("cart").hidden=!v}
+function order(){
+if(!cart.length){alert("Your cart is empty!");return}
+const phone="201000000000";
+alert("Replace the demo WhatsApp number 201000000000 in the order() function with the store's real number.");
+}
+document.getElementById("year").textContent=new Date().getFullYear();
+render();update();
+</script>
+</body>
+</html>
