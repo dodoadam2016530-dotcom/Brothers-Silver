@@ -1,27 +1,213 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brothers Silver</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f5f5f5;color:#222}
+header{background:#111;color:white;padding:20px 6%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px}
+.logo{font-size:24px;font-weight:bold;letter-spacing:2px}
+.logo span{color:#bbb}
+nav a{color:white;text-decoration:none;margin:8px}
+.hero{min-height:350px;background:linear-gradient(#0008,#0008),url('https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=1400&q=80') center/cover;display:grid;place-items:center;text-align:center;color:white;padding:30px}
+.hero h1{font-size:clamp(35px,7vw,60px);margin:0 0 15px}
+button,.btn{border:0;padding:12px 20px;background:#171717;color:white;cursor:pointer;border-radius:5px;font-size:15px;text-decoration:none;display:inline-block}
+button:hover,.btn:hover{background:#555}
+section{padding:45px 6%}
+h2{text-align:center;font-size:29px}
+.sub{text-align:center;color:#777;margin-bottom:28px}
+.categories,.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:20px}
+.category{background:white;padding:22px;text-align:center;border:1px solid #ddd;border-radius:8px;cursor:pointer}
+.category:hover,.category.active{background:#dedede;border-color:#555}
+.category .symbol{font-size:35px;margin-bottom:10px}
+.product{background:white;border-radius:8px;overflow:hidden;box-shadow:0 3px 12px #0001}
+.product img{width:100%;height:250px;object-fit:cover;display:block;cursor:pointer}
+.info{text-align:center;padding:17px}
+.info h3{margin:5px}
+.info p{color:#777;font-size:14px}
+.info button{margin:4px;font-size:13px;padding:10px 13px}
+.info .ask{background:#777}
+#empty{text-align:center;padding:30px;display:none}
+#viewer{display:none;position:fixed;inset:0;background:#000e;z-index:10;align-items:center;justify-content:center;padding:20px}
+#viewer img{max-width:90%;max-height:75vh;object-fit:contain;border-radius:8px}
+.viewer-box{text-align:center;color:white}
+#close{display:block;margin:15px auto;background:white;color:#111}
+#inquiry{display:none;background:white;padding:22px;border-radius:8px;max-width:500px;margin:25px auto}
+#inquiry input,#inquiry textarea{width:100%;padding:12px;margin:8px 0;border:1px solid #ccc;border-radius:4px;font:inherit}
+.about{background:#171717;color:white;text-align:center}
+.about p{max-width:600px;margin:auto;line-height:1.8;color:#ccc}
+footer{text-align:center;background:#080808;color:#bbb;padding:25px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">BROTHERS <span>SILVER</span></div>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#categories">Collections</a>
+    <a href="#products">Products</a>
+    <a href="#about">About</a>
+  </nav>
+</header>
+
+<div class="hero" id="home">
+  <div>
+    <h1>BROTHERS SILVER</h1>
+    <p>Discover Your Style. Shine Every Day.</p>
+    <a class="btn" href="#categories">Explore Collections</a>
+  </div>
+</div>
+
+<section id="categories">
+  <h2>Our Collections</h2>
+  <p class="sub">Choose a category to see its pictures</p>
+  <div class="categories">
+    <div class="category" data-filter="Bracelets" onclick="filterProducts('Bracelets')">
+      <div class="symbol">◉</div><b>Bracelets</b>
+    </div>
+    <div class="category" data-filter="Rings" onclick="filterProducts('Rings')">
+      <div class="symbol">○</div><b>Rings</b>
+    </div>
+    <div class="category" data-filter="Necklaces" onclick="filterProducts('Necklaces')">
+      <div class="symbol">◇</div><b>Necklaces</b>
+    </div>
+    <div class="category" data-filter="Chains" onclick="filterProducts('Chains')">
+      <div class="symbol">⛓</div><b>Chains</b>
+    </div>
+  </div>
+</section>
+
+<section id="products">
+  <h2 id="productTitle">All Silver Designs</h2>
+  <p class="sub">Tap a picture to enlarge it. No prices shown.</p>
+
+  <div class="products">
+    <div class="product" data-type="Bracelets">
+      <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=700&q=80" alt="Bracelet design" onclick="enlarge(this)">
+      <div class="info"><h3>Classic Bracelet</h3><p>Silver jewelry design</p><button onclick="enlargeProduct(this)">View Photo</button><button class="ask" onclick="askAbout('Classic Bracelet')">Ask About It</button></div>
+    </div>
+    <div class="product" data-type="Bracelets">
+      <img src="https://images.unsplash.com/photo-1617038220319-276d3cfab638?auto=format&fit=crop&w=700&q=80" alt="Fashion jewelry bracelet" onclick="enlarge(this)">
+      <div class="info"><h3>Modern Bracelet</h3><p>Modern style</p><button onclick="enlargeProduct(this)">View Photo</button><button class="ask" onclick="askAbout('Modern Bracelet')">Ask About It</button></div>
+    </div>
+    <div class="product" data-type="Rings">
+      <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=700&q=80" alt="Ring design" onclick="enlarge(this)">
+      <div class="info"><h3>Silver Rings</h3><p>Classic ring styles</p><button onclick="enlargeProduct(this)">View Photo</button><button class="ask" onclick="askAbout('Silver Rings')">Ask About It</button></div>
+    </div>
+    <div class="product" data-type="Necklaces">
+      <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=700&q=80" alt="Necklace design" onclick="enlarge(this)">
+      <div class="info"><h3>Silver Necklace</h3><p>Elegant necklace style</p><button onclick="enlargeProduct(this)">View Photo</button><button class="ask" onclick="askAbout('Silver Necklace')">Ask About It</button></div>
+    </div>
+    <div class="product" data-type="Chains">
+      <img src="https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=700&q=80" alt="Chain jewelry" onclick="enlarge(this)">
+      <div class="info"><h3>Silver Chains</h3><p>Different chain styles</p><button onclick="enlargeProduct(this)">View Photo</button><button class="ask" onclick="askAbout('Silver Chains')">Ask About It</button></div>
+    </div>
+    <div class="product" data-type="Necklaces">
+      <img src="https://images.unsplash.com/photo-1611085583191-a3b181a88401?auto=format&fit=crop&w=700&q=80" alt="Jewelry collection" onclick="enlarge(this)">
+      <div class="info"><h3>Special Collection</h3><p>Explore another design</p><button onclick="enlargeProduct(this)">View Photo</button><button class="ask" onclick="askAbout('Special Collection')">Ask About It</button></div>
+    </div>
+  </div>
+
+  <p id="empty">No pictures in this category yet.</p>
+  <div style="text-align:center;margin-top:28px">
+    <button onclick="filterProducts('All')">Show All Designs</button>
+  </div>
+
+  <div id="inquiry">
+    <h3 id="inquiryTitle">Ask About a Design</h3>
+    <p>Write your question below.</p>
+    <input id="customerName" placeholder="Your name">
+    <textarea id="question" rows="3" placeholder="Your question"></textarea>
+    <button onclick="sendInquiry()">Send Inquiry</button>
+    <button onclick="closeInquiry()">Cancel</button>
+    <p id="inquiryResult"></p>
+  </div>
+</section>
+
+<div id="viewer" onclick="closeViewer(event)">
+  <div class="viewer-box">
+    <img id="largeImage" src="" alt="Enlarged jewelry design">
+    <button id="close" onclick="document.getElementById('viewer').style.display='none'">Close Photo ✕</button>
+  </div>
+</div>
+
+<section class="about" id="about">
+  <h2>About Brothers Silver</h2>
+  <p>Welcome to Brothers Silver. Explore jewelry pictures, browse collections, and ask us about the designs you like.</p>
+</section>
+
+<footer>© 2026 Brothers Silver | Timeless Style</footer>
+
 <script>
 function filterProducts(type) {
-  const products = document.querySelectorAll('.product');
-
-  products.forEach(function(product) {
-    const category = product.getAttribute('data-type');
-
-    if (type === 'All' || category === type) {
-      product.style.display = '';
-    } else {
-      product.style.display = 'none';
-    }
+  let count = 0;
+  document.querySelectorAll('.product').forEach(function(product) {
+    let match = type === 'All' || product.dataset.type === type;
+    product.style.display = match ? '' : 'none';
+    if (match) count++;
   });
 
-  document.getElementById('products').scrollIntoView({
-    behavior: 'smooth'
+  document.querySelectorAll('.category').forEach(function(cat) {
+    cat.classList.toggle('active', cat.dataset.filter === type);
   });
+
+  document.getElementById('productTitle').textContent =
+    type === 'All' ? 'All Silver Designs' : type + ' Collection';
+
+  document.getElementById('empty').style.display = count ? 'none' : 'block';
+  document.getElementById('inquiry').style.display = 'none';
+  document.getElementById('products').scrollIntoView({behavior:'smooth'});
 }
 
-function view(name) {
-  const notice = document.getElementById('notice');
-  notice.textContent = 'Selected design: ' + name;
-  notice.style.display = 'block';
+function enlarge(img) {
+  document.getElementById('largeImage').src = img.src;
+  document.getElementById('viewer').style.display = 'flex';
+}
+
+function enlargeProduct(button) {
+  enlarge(button.closest('.product').querySelector('img'));
+}
+
+function closeViewer(event) {
+  if (event.target.id === 'viewer') {
+    document.getElementById('viewer').style.display = 'none';
+  }
+}
+
+function askAbout(name) {
+  document.getElementById('inquiryTitle').textContent = 'Ask About: ' + name;
+  document.getElementById('question').value = '';
+  document.getElementById('inquiryResult').textContent = '';
+  document.getElementById('inquiry').style.display = 'block';
+  document.getElementById('inquiry').scrollIntoView({behavior:'smooth'});
+}
+
+function closeInquiry() {
+  document.getElementById('inquiry').style.display = 'none';
+}
+
+function sendInquiry() {
+  const name = document.getElementById('customerName').value.trim();
+  const question = document.getElementById('question').value.trim();
+
+  if (!question) {
+    document.getElementById('inquiryResult').textContent =
+      'Please write your question first.';
+    return;
+  }
+
+  const product = document.getElementById('inquiryTitle').textContent;
+  const message = 'Hello Brothers Silver!%0A' +
+    'Name: ' + encodeURIComponent(name || 'Customer') + '%0A' +
+    'Product: ' + encodeURIComponent(product) + '%0A' +
+    'Question: ' + encodeURIComponent(question);
+
+  document.getElementById('inquiryResult').textContent =
+    'Your question is ready. To send it to the shop, connect a WhatsApp number to the website.';
 }
 </script>
 </body>
